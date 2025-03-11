@@ -13,7 +13,7 @@ RUN apt-get install -y \
 
 RUN pip install --upgrade pip
 RUN pip install --upgrade protobuf 
-RUN pip install 'eclipse-zenoh==0.11.0'
+RUN pip install 'eclipse-zenoh==1.2.1'
 RUN pip install keelson --verbose numpy 
 
 ADD . /opt/sources

@@ -83,9 +83,11 @@ if __name__ == "__main__":
 
    if zargs.connect is not None:
       conf.insert_json5(zenoh.config.CONNECT_KEY, json.dumps(zargs.connect))
-   zsession = zenoh.open(conf)
+   
+   with zenoh.open(conf) as zsession:
+      logging.info("Zenoh session opened!")
 
-   buffer = deque(maxlen=5000)
+      buffer = deque(maxlen=5000)
 
    ################################################################################
    # Functions to recieve envelopes
@@ -99,8 +101,8 @@ if __name__ == "__main__":
       session.put(
          key,
          envelope,
-         priority=zenoh.Priority.REAL_TIME(),
-         congestion_control=zenoh.CongestionControl.BLOCK(),
+         priority=zenoh.Priority.REAL_TIME,
+         congestion_control=zenoh.CongestionControl.BLOCK,
       )
       logging.debug("...published to zenoh!")
 
@@ -142,7 +144,7 @@ if __name__ == "__main__":
    odsession.registerMessageCallback(PointCloudMsgID, onMessage, opendlv_message_standard_pb2.opendlv_proxy_PointCloudAngularLayeredReading)
    odsession.connect()
 
-   key1 = keelson.construct_pub_sub_key(
+   key1 = keelson.construct_pubsub_key(
             realm=zargs.realm,
             entity_id=zargs.entity_id,
             subject="point_cloud",
@@ -150,7 +152,7 @@ if __name__ == "__main__":
          )
    logging.debug(f"key1:{ key1}")
 
-   key2 = keelson.construct_pub_sub_key(
+   key2 = keelson.construct_pubsub_key(
             realm=zargs.realm,
             entity_id=zargs.entity_id,
             subject="point_cloud",
@@ -160,12 +162,12 @@ if __name__ == "__main__":
    logging.debug(f"key2:{ key2}")
 
    pub1 = zsession.declare_publisher(key1,
-         priority=zenoh.Priority.REAL_TIME(),
-         congestion_control=zenoh.CongestionControl.DROP())
+         priority=zenoh.Priority.REAL_TIME,
+         congestion_control=zenoh.CongestionControl.DROP)
          
    pub2 = zsession.declare_publisher(key2,
-         priority=zenoh.Priority.REAL_TIME(),
-         congestion_control=zenoh.CongestionControl.DROP())
+         priority=zenoh.Priority.REAL_TIME,
+         congestion_control=zenoh.CongestionControl.DROP)
          
 
    while (odsession.isRunning and odsession.isConnected):
