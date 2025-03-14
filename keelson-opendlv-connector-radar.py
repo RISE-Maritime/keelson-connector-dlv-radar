@@ -31,8 +31,6 @@ from keelson.payloads.PointCloud_pb2 import PointCloud
 from keelson.payloads.PackedElementField_pb2 import PackedElementField
 
 
-print("Setting params")
-
 ################################################################################
 #Paramaters for Zenoh/Keelson
 
@@ -48,6 +46,7 @@ PointCloudMsgID = 1061
 # Main loop that sets up zenoh arguments and then spins the primary loop. 
 
 if __name__ == "__main__":
+   
    parser = argparse.ArgumentParser(
       prog="opendlv-keelson-connector-radar",
       formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -65,6 +64,7 @@ if __name__ == "__main__":
    parser.add_argument("--cid", type=int, default=111)
    parser.add_argument("--srca", type=str, default="radar/1201")
    parser.add_argument("--srcb", type=str, default="radar/1202")
+
    ################################################################################
    # Parse arguments and start zenoh session
    zargs = parser.parse_args()
