@@ -18,6 +18,7 @@ RUN pip install keelson --verbose numpy
 
 ADD . /opt/sources
 WORKDIR /opt/sources
+RUN chmod +x /opt/sources/keelson-opendlv-connector-radar.py
 RUN make
 
 ENTRYPOINT ["/opt/sources/keelson-opendlv-connector-radar.py"]
