@@ -17,8 +17,8 @@
 
 services:
   keelson-opendlv-1:
-    build: .
-    # image: ghcr.io/rise-maritime/keelson-connector-dlv-radar:0.0.0
+    # build: .
+    image: ghcr.io/rise-maritime/keelson-connector-dlv-radar:0.0.1
     network_mode: "host"
     ipc: "host"
     volumes:
