@@ -18,10 +18,19 @@ version: '3'
 
 services:
   keelson-opendlv-1:
-    image: keelson-opendlv-connector-radar:latest
+    build: .
+    # image: keelson-opendlv-connector-radar:latest
     network_mode: "host"
     ipc: "host"
     volumes:
       - /tmp:/tmp
     working_dir: /rec
-    command: ""
+    logging:
+        driver: "json-file"
+        options:
+            max-size: "100m"
+            max-file: "5"
+    command: "--log-level 10 -e landkrabba -r rise --cid=112 "
+
+
+    
