@@ -106,8 +106,7 @@ if __name__ == "__main__":
             session.put(
                 key,
                 envelope,
-                priority=zenoh.Priority.REAL_TIME,
-                congestion_control=zenoh.CongestionControl.BLOCK,
+         
             )
             logging.debug("...published to zenoh!")
 
@@ -182,21 +181,25 @@ if __name__ == "__main__":
             while buffer:
                 try:
                     point_cloud, idx = buffer.popleft()  # Oldest first.
-                    _currPC = point_cloud.timestamp.toDateTime()
-                    _currSysC = datetime.now
-                    asyncCurr = _currSysC - _currPC
-                    logging.debug(f"Current Async: {asyncCurr}")
+                    #_currPC = point_cloud.timestamp.toDateTime()
+                    #_currSysC = datetime.now
+                    #asyncCurr = _currSysC - _currPC
+                    #logging.debug(f"Current Async: {asyncCurr}")
                     payload = point_cloud.SerializeToString()
                     envelope = keelson.enclose(payload)
                     logging.debug(f"id:{idx}")
-                except:
-                    print("Could not serialise the point_cloud")
+                except Exception as e:
+                    print(f"Could not serialise the point_cloud: {e}")
                     continue
-                if idx == 1201:
-                    pub1.put(envelope)
-                elif idx == 1202:
-                    pub2.put(envelope)
-                logging.debug("Published!")
+                try:
+                    if idx == 1201:
+                        pub1.put(envelope)
+                    elif idx == 1202:
+                        pub2.put(envelope)
+                    logging.debug("Published!")
+                except Exception as e:
+                    logging.error(f"Error publishing: {e}")
+                    continue
 
         logging.debug("Connection broken: Closing")
 
